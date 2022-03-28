@@ -1,0 +1,127 @@
+#! /usr/bin/perl 
+    
+use strict;
+use warnings;
+use Fcntl;
+
+my $fileopen = 'file.txt';
+open(my $fo, '<:encoding(UTF-8)', $fileopen)
+or die "Could not open file '$fileopen' $!";
+
+
+my $value;
+my @mass = ();
+my $k=0;
+
+while (my $row = <$fo>) {
+	if (length($row) > 16) {
+		chomp $row;
+		$mass[$k] = $row;
+		$k++;
+	}
+}
+close  $fo;
+$k=0; 
+my $a=0; my @a=();
+my $c=0; my @c=();
+my $g=0; my @g=();
+my $t=0; my @t=();
+my $i=0;
+
+while ($k<($#mass)+1) {
+	my @arr=split(//, $mass[$k]);
+
+	
+	while ($i<($#arr+1)) {
+		
+		if ($arr[$i] eq 'A') {
+				$a++;
+		} 
+		if ($arr[$i] eq 'G') {
+				$g++;
+		}
+		if ($arr[$i] eq 'C') {
+				$c++;
+			} 
+		if ($arr[$i] eq 'T') {
+				$t++;
+			} 
+
+		$a[$k][$i]=$a;
+		$t[$k][$i]=$t;
+		$g[$k][$i]=$g;
+		$c[$k][$i]=$c;
+		
+		$a=0;
+		$c=0;
+		$g=0;
+		$t=0;
+
+		$i++;
+	}
+
+	$i=0;
+
+	$k++;
+}
+ 
+$k=0; 
+my @arr=();
+my $sum_a=0; 
+my $sum_c=0; 
+my $sum_g=0; 
+my $sum_t=0;
+my $length = length($mass[1]);
+
+
+while ($i<$length) {
+	
+	while ($k<$#mass){
+		$sum_a+=$a[$k][$i];
+		$sum_t+=$t[$k][$i];
+		$sum_g+=$g[$k][$i];
+		$sum_c+=$c[$k][$i];
+		$k++;
+	}	
+
+	if ($sum_a > $sum_c) {
+		if ($sum_a > $sum_t){
+			if ($sum_a > $sum_g){
+				$arr[$i]='A';
+			} else {
+				$arr[$i]='G';
+			}
+		} else {
+			if ($sum_t > $sum_g){
+				$arr[$i]='T';
+			} else {
+				$arr[$i]='G';
+			}
+		}
+	} else {
+		if ($sum_c > $sum_t){
+				if ($sum_c > $sum_g){
+					$arr[$i]='C';
+				} else {
+					$arr[$i]='G';
+				}
+			} else {
+				if ($sum_t > $sum_g){
+					$arr[$i]='T';
+				} else {
+					$arr[$i]='G';
+				}
+			}
+		}
+	$sum_a=0;
+	$sum_c=0;
+	$sum_g=0;
+	$sum_t=0;
+
+	$k=0;
+	$i++;
+
+}
+
+print @arr;
+print "\n";

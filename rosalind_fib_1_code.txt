@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+print "Enter the value\n";
+$n = <STDIN>;
+$k = <STDIN>;
+
+my $BP=1;
+my $SP=0;
+my $buff=0;
+
+for ($i=1; $i < $n; $i++){
+	$buff=$BP*$k;
+	$BP+=$SP;
+	$SP=$buff;
+}
+
+print "$BP\n";

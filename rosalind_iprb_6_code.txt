@@ -1,0 +1,74 @@
+#! /usr/bin/perl 
+
+use strict;
+use warnings;
+use Fcntl;
+use Switch;
+
+sub factorial {
+    my $n = shift;
+    if ($n==0) {
+        return 1;
+    } else {
+        return $n*factorial($n-1);
+    }
+}
+    
+my $dom=23;
+my $dpr=15;
+my $rec=16;
+
+my $kol=(factorial($dom+$rec+$dpr))/(2*factorial($dom+$rec+$dpr-2))*4;
+my @set=();
+my @result=();
+my $counter=0;
+my $i;
+
+for ($i=0; $i<$dom; $i++){
+	$set[$counter]='00';
+	$counter++;
+}
+for ($i=0; $i<$dpr; $i++){
+	$set[$counter]='01';
+	$counter++;
+}
+for ($i=0; $i<$rec; $i++){
+	$set[$counter]='11';
+	$counter++;
+}
+
+$counter=0;
+for ($i=0; $i<=$#set; $i++){
+	for (my $j=$i+1; $j<=$#set; $j++){
+		$result[$counter]=$set[$i].$set[$j];
+#		print $result[$counter]."\n";
+		$counter++;
+	}
+}
+
+my $poss=0;
+
+for ($i=0; $i<$counter; $i++){
+	switch ($result[$i]){
+		case "0000" {$poss+=4}
+		case "0001" {$poss+=4}
+		case "0010" {$poss+=4}
+		case "0011" {$poss+=4}
+		case "0100" {$poss+=4}
+
+		case "0101" {$poss+=3}
+		case "0110" {$poss+=3}
+		case "0111" {$poss+=2}
+		
+		case "1000" {$poss+=4}
+		case "1001" {$poss+=3}
+		case "1010" {$poss+=3}
+		case "1011" {$poss+=2}
+		case "1100" {$poss+=4}
+		case "1101" {$poss+=2}
+		case "1110" {$poss+=2}
+		case "1111" {$poss+=0}
+	}
+}
+print $poss/$kol;
+print "\n";

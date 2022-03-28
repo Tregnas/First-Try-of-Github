@@ -1,0 +1,43 @@
+#! /usr/bin/perl 
+    
+use strict;
+use warnings;
+use Fcntl;
+    
+my $filein = 'table.txt';
+open(my $fin, '<:encoding(UTF-8)', $filein)
+or die "Could not open file '$filein' $!";
+
+my @table=();
+my @set=();
+my $sum=0;
+my $j=0;
+my $i=0;
+
+while (my $row = <$fin>) {
+	chomp $row;
+	$table[$i]=$row;
+#	print $table[$i]."\n";
+	$i++;
+}
+close $fin;
+
+my $filedata = 'input.txt';
+open(my $fdata, '<:encoding(UTF-8)', $filedata)
+or die "Could not open file '$filedata' $!";
+
+while (my $file = <$fdata>){
+	chomp $file;
+	$set[$j]=$file;
+	$j++;
+}
+
+for ($i=0; $i<length($set[0])+1; $i++){
+	for ($j=0; $j<$#table+1; $j++){
+		if (substr($set[0], $i, 1) eq substr($table[$j], 0, 1)){
+			$sum+=substr($table[$j], 2, length($table[$j]));
+#			print substr($set[0], $i, 1)." ".substr($table[$j], 0, 1)."\n";
+		}
+	}
+}print $sum."\n";
+close $fdata;

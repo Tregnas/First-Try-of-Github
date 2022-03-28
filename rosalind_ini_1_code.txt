@@ -1,0 +1,36 @@
+#! /usr/bin/perl 
+
+use strict;
+use warnings;
+use Fcntl;
+    
+my $filein = 'insert.txt';
+open(my $fin, '<:encoding(UTF-8)', $filein)
+or die "Could not open file '$filein' $!";
+
+my $a=0;
+my $c=0;
+my $g=0;
+my $t=0;
+my @mass=();
+my $i=0;
+
+while(read $fin, my $row, 1)
+{
+	if ($row eq 'A') {
+		$a++;
+	} 
+	if ($row eq 'G') {
+			$g++;
+		}
+	if ($row eq 'C') {
+			$c++;
+		} 
+	if ($row eq 'T') {
+			$t++;
+		} 
+
+	$i++;
+}
+print $a." ".$c." ".$g." ".$t."\n";
+close $fin;

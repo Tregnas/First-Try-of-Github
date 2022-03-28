@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+my $n=<STDIN>;
+sub fibonacci {
+  my $n = shift;
+  $n < 3 ? 1 : fibonacci($n-1) + fibonacci($n-2)
+}
+ 
+foreach (1..$n) {
+  print fibonacci($_), ", ";
+}
+print "..."
